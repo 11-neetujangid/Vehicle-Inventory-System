@@ -1,7 +1,10 @@
 .App {
-  text-align: center;
-}
 
+   padding: 20px;
+  text-align: center;
+  display: table;
+  margin: auto;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -20,7 +23,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(5px + 2vmin);
   color: white;
 }
 
@@ -35,4 +38,47 @@
   to {
     transform: rotate(360deg);
   }
+}
+form{
+  display:block;
+  text-align:center;
+  padding: 20px;
+  width:450px;
+  margin: 0 auto;
+  }
+
+input{
+  text-align:center;
+  display: block;
+  margin: 20px;
+  width:120px;
+  }
+  .container {
+    background-color: #f8f9fa;;
+  }
+ button:hover {
+  opacity: 0.8;
+}
+input[type=text], input[type=date] {
+  width: 100%;
+  padding: 10px px;
+  margin: 5px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.item-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+.card {
+  text-align: center;
+  padding: 10px;
+  width: 300px;
+  border-radius: 5px;
+  padding: 1em;
+  color: black;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
