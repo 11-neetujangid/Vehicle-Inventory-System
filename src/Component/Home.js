@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { setData, addData } from "../Actions/action";
 const Home = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const data = useSelector((state) => state.data)
     const onChangeValue = (e) => {
         dispatch(setData({ ...data, [e.target.name]: e.target.value }));
@@ -9,6 +11,7 @@ const Home = () => {
     const onHandleClick = (e) => {
         e.preventDefault()
         dispatch(addData({ ...data, id: new Date().getTime() }));
+        history.push('/viewlist')
     }
     return (
         <div className="App">
