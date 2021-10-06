@@ -6,7 +6,7 @@ const AddTrip = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const trip = useSelector((state) => state.trip);
-    console.log(trip.inlineRadioOptions)
+    // console.log(trip.inlineRadioOptions)
     const { id } = useParams()
 
     const onChangeInput = (e) => {

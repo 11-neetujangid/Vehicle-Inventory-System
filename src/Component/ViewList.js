@@ -9,8 +9,6 @@ const ViewList = () => {
     const search = useSelector((state) => state.search);
     const year = useSelector((state) => state.year);
     const trip = useSelector((state) => state.tripData);
-    console.log(trip)
-    let count = 0;
     const onChangeSearch = (e) => {
         dispatch(setSearchData(e.target.value));
     }
@@ -21,11 +19,6 @@ const ViewList = () => {
     const onClickProdution = (e) => {
         e.preventDefault();
         dispatch(showProductionData(search));
-    }
-    const onClickSort = (e) => {
-        e.preventDefault();
-        console.log("sorting", search)
-        // dispatch(showSortData(search));
     }
     const onChangeSearch2 = (e) => {
         console.log({ ...year, [e.target.name]: e.target.value })
@@ -43,12 +36,10 @@ const ViewList = () => {
     }
     const onChangeCheck = (e) => {
         console.log(e.target.value)
-        trip.map((record) => {
-            console.log(record.inlineRadioOptions === "No")
-            if (record.inlineRadioOptions === "No") {
-                dispatch(showProgressData(record));
-            }
-        })
+        dispatch(showProgressData(trip));
+    }
+    const onChangeSelect = (e) => {
+        dispatch(showSortData(e.target.value))
     }
     return (
         <div className="App">
@@ -58,13 +49,20 @@ const ViewList = () => {
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => onChangeSearch(e)} />
                         <button className="btn btn-outline-success" type="submit" onClick={onHandleSearch}>Search</button>
                         <button className="btn btn-outline-success" type="submit" onClick={onClickProdution} >Production</button>
-                        <button className="btn btn-outline-success" type="submit" onClick={onClickSort} >Sort</button>
                     </form>
                     <form className="d-flex">
                         <input className="form-control me-2" type="text" placeholder="start year" aria-label="Search" name="start" onChange={(e) => onChangeSearch2(e)} />
                         <input className="form-control me-2" type="text" placeholder="end year" aria-label="Search" name="end" onChange={(e) => onChangeSearch2(e)} />
                         <button className="btn btn-outline-success" type="submit" onClick={onClickYear}>Search</button>
                     </form>
+                    <form className="d-flex">
+                        <select class="form-select" aria-label="Default select example" onChange={(e) => onChangeSelect(e)}>
+                            <option selected>Open this select</option>
+                            <option value="asc">Asc</option>
+                            <option value="desc">Desc</option>
+                        </select>
+                    </form>
+
                 </div>
             </nav><br />
             <div className="form-check form-check-inline">

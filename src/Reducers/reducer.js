@@ -26,7 +26,7 @@ const initialState = {
     },
     tripData: [],
     count: [],
-    progress: []
+    progress: [],
 }
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -37,7 +37,7 @@ const reducer = (state = initialState, action) => {
             }
         case ADD_DATA:
             const vehicleData = [...state.vehicleData, action.payload];
-            localStorage.setItem('vehicle', JSON.stringify(vehicleData));;
+            localStorage.setItem('vehicle', JSON.stringify(vehicleData));
             return {
                 ...state,
                 vehicleData,
@@ -59,24 +59,6 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 vehicleData: production.filter((record) => record.production === action.payload)
-            }
-        case SHOW_SORT_DATA:
-            console.log(action.payload)
-            const count = [...state.count, action.payload];
-            localStorage.setItem('complete', (count));
-            return {
-                ...state,
-                // count,
-                // vehicleData: count.filter((record) => record === action.payload)
-            }
-        case SHOW_PROGRESS_DATA:
-
-            const trip = JSON.parse(localStorage.getItem('trip'));
-            console.log(trip)
-            const vehicle = JSON.parse(localStorage.getItem('vehicle'));
-            return {
-                ...state,
-                vehicleData: vehicle.filter((record) => record.id === trip.filter((data) => data.id))
             }
         case SET_SEARCH_YEAR:
             console.log(action.payload)
@@ -103,6 +85,70 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 tripData,
                 trip: initialState.trip,
+            }
+        case SHOW_PROGRESS_DATA:
+            console.log(action.payload);
+            const a = action.payload.filter((data) => { return data.inlineRadioOptions.includes("No") })
+            console.log(a);
+            const data = a.map((data) => data.id);
+            var iterator = data.values();
+            let value = (iterator.next().value);
+            console.log(value)
+            return {
+                ...state,
+                vehicleData: state.vehicleData.filter((record) => {
+                    return value.includes(record.id);
+                })
+            }
+        case SHOW_SORT_DATA:
+            const trip = JSON.parse(localStorage.getItem('trip'));
+            let sort = trip.sort((a, b) => a.id - b.id);
+            let x = sort.filter((data) => { return data.inlineRadioOptions.includes("Yes") })
+            const getCompleteTrip = (arr, key) => {
+                let arr2 = [];
+                arr.forEach((x) => {
+                    if (arr2.some((val) => { return val[key] == x[key] })) {
+                        // If yes! then increase the occurrence by 1
+                        arr2.forEach((k) => {
+                            if (k[key] === x[key]) {
+                                k["occurrence"]++
+                            }
+                        })
+                    } else {
+                        let a = {}
+                        a[key] = x[key]
+                        a["occurrence"] = 1
+                        arr2.push(a);
+                    }
+                })
+                return arr2
+            }
+            let key = "id"
+            let result = getCompleteTrip(x, key)
+            let count = result.sort((a, b) => {
+                if (action.payload === "asc") return a.occurrence - b.occurrence
+                if (action.payload === "desc") return b.occurrence - a.occurrence
+                return 0;
+            });
+            const filterByReference = (arr1, arr2) => {
+                let res = [];
+                let d = arr2.map(data => data.id)
+                for (let i = 0; i < arr1.length; i++) {
+                    const { id } = arr1[i];
+                    for (let j = 0; j < arr2.length; j++) {
+                        if (d[j].includes(id)) {
+                            res.push(arr1[j]);
+                            console.log(res);
+                        };
+                    }
+                };
+                return res;
+            }
+            let sortedData = filterByReference(state.vehicleData, count)
+            console.log(sortedData);
+            return {
+                ...state,
+                vehicleData: sortedData
             }
         default:
             return state;
